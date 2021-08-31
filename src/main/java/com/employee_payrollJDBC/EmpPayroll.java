@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import com.mysql.jdbc.Statement;
 
 public class EmpPayroll {
@@ -16,6 +15,7 @@ public class EmpPayroll {
        Connection con = getSqlConnection();
        try {
     	   if(con != null) {
+    		   //Insert a data
     		   String insertQuery = "INSERT INTO employee_payroll(name, gender, salary, startDate) VALUES (?,?,?,?)";
     		   PreparedStatement insertStatement = con.prepareStatement(insertQuery);
     		   insertStatement.setString(2, "Terisa");
@@ -28,9 +28,10 @@ public class EmpPayroll {
     			   System.out.println("Data Inserted");
     		   }
     		   
-    		   String readQuery = "SELECT * FROM employee_payroll";
+    		   //Retrieve all the data
+    		   String retrieveQuery = "SELECT * FROM employee_payroll";
     		   Statement statement = (Statement) con.createStatement();
-    		   ResultSet resultSet = statement.executeQuery(readQuery);
+    		   ResultSet resultSet = statement.executeQuery(retrieveQuery);
     		   
     		   while(resultSet.next()) {
     			   
@@ -43,7 +44,8 @@ public class EmpPayroll {
     			   String rowData = String.format("Id : %d \nName : %s \nGender : %s \nSalary : %d \nStartDate : %s", id, name, gender, salary,startDate);
     			   System.out.println(rowData);
     		   }
-   		   
+    		   
+    		   //Update data with salary by person's name
     		   String updateQuery = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
     		   PreparedStatement updateStatement = con.prepareStatement(updateQuery);
     		   updateStatement.setInt(1, 30000);
@@ -52,6 +54,24 @@ public class EmpPayroll {
     		   int rowUpdated = updateStatement.executeUpdate();
     		   if(rowUpdated > 0){
     			   System.out.println("Data Updated");
+    		   }
+    		   
+    		   //Retrieve data using person's name 
+    		   String selectQuery = "SELECT * FROM employee_payroll WHERE name = ?";
+    		   PreparedStatement selectStatement = con.prepareStatement(selectQuery);
+    		   selectStatement.setString(1, "Terisa");
+    		   ResultSet resultSet1 = selectStatement.executeQuery();
+    		   
+    		   while(resultSet1.next()) {
+    			   
+    			   int id = resultSet1.getInt("id");
+    			   String name = resultSet1.getString("name");
+    			   String gender = resultSet1.getString("gender");
+    			   int salary = resultSet1.getInt("salary");
+    			   String startDate = resultSet1.getDate("startDate").toString();
+    			   
+    			   String rowData = String.format("Id : %d \nName : %s \nGender : %s \nSalary : %d \nStartDate : %s", id, name, gender, salary,startDate);
+    			   System.out.println(rowData);
     		   }
     	   }
     	   
