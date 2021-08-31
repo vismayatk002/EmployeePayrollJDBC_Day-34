@@ -17,13 +17,13 @@ public class EmpPayroll {
        try {
     	   if(con != null) {
     		   String insertQuery = "INSERT INTO employee_payroll(name, gender, salary, startDate) VALUES (?,?,?,?)";
-    		   PreparedStatement preparedStatement = con.prepareStatement(insertQuery);
-    		   preparedStatement.setString(2, "Terisa");
-    		   preparedStatement.setString(3, "F");
-    		   preparedStatement.setInt(4, 20000);
-    		   preparedStatement.setDate(5, new Date(2021-07-13));
+    		   PreparedStatement insertStatement = con.prepareStatement(insertQuery);
+    		   insertStatement.setString(2, "Terisa");
+    		   insertStatement.setString(3, "F");
+    		   insertStatement.setInt(4, 20000);
+    		   insertStatement.setDate(5, new Date(2021-07-13));
     		   
-    		   int rowInserted = preparedStatement.executeUpdate();
+    		   int rowInserted = insertStatement.executeUpdate();
     		   if(rowInserted > 0){
     			   System.out.println("Data Inserted");
     		   }
@@ -43,8 +43,18 @@ public class EmpPayroll {
     			   String rowData = String.format("Id : %d \nName : %s \nGender : %s \nSalary : %d \nStartDate : %s", id, name, gender, salary,startDate);
     			   System.out.println(rowData);
     		   }
+   		   
+    		   String updateQuery = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+    		   PreparedStatement updateStatement = con.prepareStatement(updateQuery);
+    		   updateStatement.setInt(1, 30000);
+    		   updateStatement.setString(2, "Terisa");
     		   
+    		   int rowUpdated = updateStatement.executeUpdate();
+    		   if(rowUpdated > 0){
+    			   System.out.println("Data Updated");
+    		   }
     	   }
+    	   
        }catch(SQLException sqlException) {
     	   System.out.println(sqlException.getMessage());
        }finally {
