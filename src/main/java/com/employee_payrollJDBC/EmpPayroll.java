@@ -73,6 +73,25 @@ public class EmpPayroll {
     			   String rowData = String.format("Id : %d \nName : %s \nGender : %s \nSalary : %d \nStartDate : %s", id, name, gender, salary,startDate);
     			   System.out.println(rowData);
     		   }
+		   
+    		   //Retrieve employees who have joined in particular date range
+    		   String selQuery = "SELECT * FROM employee_payroll WHERE startDate > ? AND startDate < ?";
+    		   PreparedStatement selStatement = con.prepareStatement(selQuery);
+    		   selStatement.setString(1, "2021-07-01");
+    		   selStatement.setString(2, "2021-07-15");
+    		   ResultSet resultData = selStatement.executeQuery();
+    		   
+    		   while(resultData.next()) {
+    			   
+    			   int id = resultData.getInt("id");
+    			   String name = resultData.getString("name");
+    			   String gender = resultData.getString("gender");
+    			   int salary = resultData.getInt("salary");
+    			   String startDate = resultData.getDate("startDate").toString();
+    			   
+    			   String rowData = String.format("Id : %d \nName : %s \nGender : %s \nSalary : %d \nStartDate : %s", id, name, gender, salary,startDate);
+    			   System.out.println(rowData);
+    		   }
     	   }
     	   
        }catch(SQLException sqlException) {
