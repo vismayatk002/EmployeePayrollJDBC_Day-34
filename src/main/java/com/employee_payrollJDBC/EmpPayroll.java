@@ -92,6 +92,41 @@ public class EmpPayroll {
     			   String rowData = String.format("Id : %d \nName : %s \nGender : %s \nSalary : %d \nStartDate : %s", id, name, gender, salary,startDate);
     			   System.out.println(rowData);
     		   }
+    		   
+    		   //use databaseFunction
+    		   String selOpQuery = "SELECT SUM(salary) AS 'Sum',AVG(salary) AS 'Average',MIN(salary) AS 'Minimum',MAX(salary) AS 'Maximum',COUNT(id) AS 'Count' FROM employee_payroll WHERE gender = ? GROUP BY gender";
+    		   PreparedStatement selOpStatement = con.prepareStatement(selOpQuery);
+    		   selOpStatement.setString(1, "F");
+    		   ResultSet resultOpreate = selOpStatement.executeQuery();
+    		   
+    		   while(resultOpreate.next()) {
+    			   
+    			   int Sum = resultOpreate.getInt("Sum");
+    			   Float Average = resultOpreate.getFloat("Average");
+    			   int Minimum = resultOpreate.getInt("Minimum");
+    			   int Maximum = resultOpreate.getInt("Maximum");
+    			   int Count = resultOpreate.getInt("Count");
+    			   
+    			   String rowData = String.format("Sum : %d \nAverage : %f \nMinimum : %d \nMaximum : %d \nCount : %s", Sum, Average, Minimum, Maximum,Count);
+    			   System.out.println(rowData);
+    		   }
+    		   
+    		   selOpQuery = "SELECT SUM(salary) AS 'Sum',AVG(salary) AS 'Average',MIN(salary) AS 'Minimum',MAX(salary) AS 'Maximum',COUNT(id) AS 'Count' FROM employee_payroll WHERE gender = ? GROUP BY gender";
+    		   selOpStatement = con.prepareStatement(selOpQuery);
+    		   selOpStatement.setString(1, "M");
+    		   resultOpreate = selOpStatement.executeQuery();
+    		   
+    		   while(resultOpreate.next()) {
+    			   
+    			   int Sum = resultOpreate.getInt("Sum");
+    			   Float Average = resultOpreate.getFloat("Average");
+    			   int Minimum = resultOpreate.getInt("Minimum");
+    			   int Maximum = resultOpreate.getInt("Maximum");
+    			   int Count = resultOpreate.getInt("Count");
+    			   
+    			   String rowData = String.format("Sum : %d \nAverage : %f \nMinimum : %d \nMaximum : %d \nCount : %s", Sum, Average, Minimum, Maximum,Count);
+    			   System.out.println(rowData);
+    		   }
     	   }
     	   
        }catch(SQLException sqlException) {
