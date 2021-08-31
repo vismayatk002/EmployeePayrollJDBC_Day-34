@@ -1,9 +1,13 @@
 package com.employee_payrollJDBC;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mysql.jdbc.Statement;
 
 public class EmpPayroll {
 	
@@ -12,17 +16,34 @@ public class EmpPayroll {
        Connection con = getSqlConnection();
        try {
     	   if(con != null) {
-    		   String insertQuery = "INSERT INTO employee_payroll(id, name, gender, salary, startDate) VALUES (?,?,?,?,?)";
+    		   String insertQuery = "INSERT INTO employee_payroll(name, gender, salary, startDate) VALUES (?,?,?,?)";
     		   PreparedStatement preparedStatement = con.prepareStatement(insertQuery);
-    		   preparedStatement.setInt(1, 4);
     		   preparedStatement.setString(2, "Terisa");
     		   preparedStatement.setString(3, "F");
     		   preparedStatement.setInt(4, 20000);
-    		   preparedStatement.setString(5, "2021-07-13");
+    		   preparedStatement.setDate(5, new Date(2021-07-13));
+    		   
     		   int rowInserted = preparedStatement.executeUpdate();
     		   if(rowInserted > 0){
     			   System.out.println("Data Inserted");
     		   }
+    		   
+    		   String readQuery = "SELECT * FROM employee_payroll";
+    		   Statement statement = (Statement) con.createStatement();
+    		   ResultSet resultSet = statement.executeQuery(readQuery);
+    		   
+    		   while(resultSet.next()) {
+    			   
+    			   int id = resultSet.getInt("id");
+    			   String name = resultSet.getString("name");
+    			   String gender = resultSet.getString("gender");
+    			   int salary = resultSet.getInt("salary");
+    			   String startDate = resultSet.getDate("startDate").toString();
+    			   
+    			   String rowData = String.format("Id : %d \nName : %s \nGender : %s \nSalary : %d \nStartDate : %s", id, name, gender, salary,startDate);
+    			   System.out.println(rowData);
+    		   }
+    		   
     	   }
        }catch(SQLException sqlException) {
     	   System.out.println(sqlException.getMessage());
